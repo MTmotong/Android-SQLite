@@ -2,8 +2,10 @@ package com.example.databasetest;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -79,6 +81,33 @@ public class MainActivity extends Activity {
         	
         });
         
+        Button queryData = (Button) findViewById(R.id.query_data);
+        queryData.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				SQLiteDatabase db = dbHelper.getWritableDatabase();
+				Cursor cursor = db.query("Book", null, null, null, null, null, null);
+				//调用cursor的moveToFirst方法，将数据的指针移动到第一行的位置	
+				if(cursor.moveToFirst()) {
+					do { // 循环中通过cursor的getColumnindex的方法获取到某一列在表中对应的位置索引，
+					     //然后将索引传到相应的取值方法中，得到读取的数据
+						String name = cursor.getString(cursor.getColumnIndex("name"));
+						String author = cursor.getString(cursor.getColumnIndex("author"));
+						int pages = cursor.getInt(cursor.getColumnIndex("pages"));
+						double price = cursor.getDouble(cursor.getColumnIndex("price"));
+						Log.d("MainActivity", "Book name is " + name);
+						Log.d("MainActivity", "Book author is " + author);
+						Log.d("MainActivity", "Book pages are " + pages);
+						Log.d("MainActivity", "Book price is " + price);
+						
+					} while (cursor.moveToNext());
+				}
+				cursor.close();
+			}
+        	
+        });
     }
 
 }
