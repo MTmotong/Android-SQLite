@@ -108,6 +108,37 @@ public class MainActivity extends Activity {
 			}
         	
         });
+        
+        Button replaceData = (Button) findViewById(R.id.replace_data);
+        replaceData.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				SQLiteDatabase db = dbHelper.getWritableDatabase();
+				//开启一个事务
+				db.beginTransaction();
+				try {
+					db.delete("Book", null, null);
+					if(true) {
+						throw new NullPointerException();
+					}
+					@SuppressWarnings("unused")
+					ContentValues values = new ContentValues();
+					values.put("name", "Game of Thrones");
+					values.put("author", "George Martin");
+					values.put("pages", 720);
+					values.put("price", 43.9);
+					db.insert("Book", null, values);
+					db.setTransactionSuccessful();
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					db.endTransaction();
+				}
+			}
+        	
+        });
     }
 
 }
