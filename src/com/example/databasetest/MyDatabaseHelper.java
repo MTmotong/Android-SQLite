@@ -15,6 +15,11 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 			+ "pages integer, "
 			+ "name text)";
 	
+	public static final String GREATE_CATEGORY = "create table Category (" 
+			+ "id integer primary key autoincrement, "
+			+ "category_name text, " 
+			+ "category_code integer)";
+	
 	private Context mContext;
 	
 	//自己建的帮助类，继承自SQLiteOpenHelper，在这里重写onCreate和onUpgrate，在这两个方法中实现创建、升级数据库的逻辑
@@ -27,11 +32,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		
 		db.execSQL(GREATE_BOOK); //调用execSQL方法去执行建表语句
+		db.execSQL(GREATE_CATEGORY);
 		Toast.makeText(mContext, "Create successed", Toast.LENGTH_SHORT).show();
 	}
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		
+		db.execSQL("drop table if exists Book");
+		db.execSQL("drop table if exists Category");
+		onCreate(db);
 	}
 	
 }
