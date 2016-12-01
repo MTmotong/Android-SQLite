@@ -66,6 +66,19 @@ public class MainActivity extends Activity {
 			}
         	
         });
+        
+        Button deleteData = (Button) findViewById(R.id.delete_data);
+        deleteData.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				SQLiteDatabase db = dbHelper.getWritableDatabase();
+				db.delete("Book", "pages > ?", new String[] { "454" });
+			}
+        	
+        });
+        
     }
 
 }
